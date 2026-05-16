@@ -7,6 +7,7 @@ from typing import Any
 from homeassistant.components.sensor import SensorEntity
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
+from homeassistant.helpers.device_registry import DeviceEntryType
 from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
@@ -50,6 +51,8 @@ class PostcodeloterijSensor(
             identifiers={(DOMAIN, postcode)},
             name=f"Postcodeloterij {postcode}",
             manufacturer="Postcodeloterij",
+            entry_type=DeviceEntryType.SERVICE,
+            configuration_url="https://www.postcodeloterij.nl",
         )
 
     @property
