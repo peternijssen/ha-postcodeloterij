@@ -1,0 +1,24 @@
+{
+  "title": "Postcodeloterij",
+  "config": {
+    "step": {
+      "user": {
+        "title": "Postcodeloterij",
+        "description": "Voer de postcode in waarvoor je prijzen wilt controleren.",
+        "data": {
+          "postcode": "Postcode"
+        },
+        "data_description": {
+          "postcode": "Vier cijfers gevolgd door twee hoofdletters, bijv. 1234AB"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Kan de Postcodeloterij niet bereiken. Controleer je netwerkverbinding.",
+      "invalid_postcode": "Ongeldige postcode. Gebruik het formaat 1234AB (4 cijfers + 2 letters)."
+    },
+    "abort": {
+      "already_configured": "Deze postcode is al geconfigureerd."
+    }
+  }
+}

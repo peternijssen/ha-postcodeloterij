@@ -1,0 +1,24 @@
+{
+  "title": "Postcodeloterij",
+  "config": {
+    "step": {
+      "user": {
+        "title": "Postcodeloterij",
+        "description": "Enter the postal code you want to check for prizes.",
+        "data": {
+          "postcode": "Postal code"
+        },
+        "data_description": {
+          "postcode": "Four digits followed by two uppercase letters, e.g. 1234AB"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Unable to reach Postcodeloterij. Check your network connection.",
+      "invalid_postcode": "Invalid postal code. Use the format 1234AB (4 digits + 2 letters)."
+    },
+    "abort": {
+      "already_configured": "This postal code is already configured."
+    }
+  }
+}
