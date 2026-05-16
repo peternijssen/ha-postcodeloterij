@@ -1,12 +1,12 @@
 {
   "domain": "postcodeloterij",
   "name": "Postcodeloterij",
-  "version": "1.0.0",
+  "codeowners": ["@peternijssen"],
   "config_flow": true,
+  "documentation": "https://github.com/peternijssen/ha-postcodeloterij",
   "integration_type": "device",
   "iot_class": "cloud_polling",
+  "issue_tracker": "https://github.com/peternijssen/ha-postcodeloterij/issues",
   "requirements": [],
-  "codeowners": ["@peternijssen"],
-  "documentation": "https://github.com/peternijssen/ha-postcodeloterij",
-  "issue_tracker": "https://github.com/peternijssen/ha-postcodeloterij/issues"
+  "version": "1.0.0"
 }
