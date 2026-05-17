@@ -48,6 +48,8 @@ Each configured postal code gets one sensor:
 | `prizes` | List of prize descriptions (empty when no prizes won) |
 | `period` | The draw period checked, formatted as `MM-YYYY` |
 | `prize_img_url` | URL of the prize image, or `null` when no prize was won |
+| `prize_description` | Plain-text prize description, or `null` when no prize was won |
+| `prize_more_info_url` | URL to the prize detail page on the Postcodeloterij FAQ, or `null` when no prize was won |
 
 ### Example state
 
@@ -75,14 +77,13 @@ automation:
       - "{{ now().day == 2 }}"
       - "{{ states('sensor.postcodeloterij_1234ab') | int(0) > 0 }}"
     action:
-      service: notify.all_devices
+      action: notify.all_devices
       data:
         title: "Postcodeloterij uitslag"
-        message: >
-          Deze maand heb je {{ states('sensor.postcodeloterij_1234ab') }}x prijs!
-          Namelijk {{ state_attr('sensor.postcodeloterij_1234ab', 'prizes') | join(', ') }}.
-          Gefeliciteerd!
+        message: "{{ state_attr('sensor.postcodeloterij_1234ab', 'prize_description') }}"
         data:
+          clickAction: "{{ state_attr('sensor.postcodeloterij_1234ab', 'prize_more_info_url') }}"
+          image: "{{ state_attr('sensor.postcodeloterij_1234ab', 'prize_img_url') }}"
           ttl: 0
           priority: high
 ```

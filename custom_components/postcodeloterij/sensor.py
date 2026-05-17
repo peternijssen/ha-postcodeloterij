@@ -73,4 +73,6 @@ class PostcodeloterijSensor(
             "prizes": self._data.prizes,
             "period": self._data.period,
             "prize_img_url": self._data.prize_img_url,
+            "prize_description": self._data.prize_description,
+            "prize_more_info_url": self._data.prize_more_info_url,
         }

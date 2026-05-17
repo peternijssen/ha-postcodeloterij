@@ -1,7 +1,9 @@
 """Coordinator for the Postcodeloterij integration."""
 from __future__ import annotations
 
+import html as html_lib
 import logging
+import re
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 
@@ -16,12 +18,30 @@ from .const import API_HEADERS, API_URL, DOMAIN, POLL_INTERVAL
 _LOGGER = logging.getLogger(__name__)
 
 
+def _parse_content(content: str | None) -> tuple[str | None, str | None]:
+    """Extract plain-text description and more-info URL from the HTML content field."""
+    if not content:
+        return None, None
+
+    url_match = re.search(r'href="([^"]+)"', content)
+    more_info_url = url_match.group(1) if url_match else None
+
+    plain = re.sub(r"<a\b[^>]*>.*?</a>", "", content, flags=re.DOTALL)
+    plain = re.sub(r"<[^>]+>", " ", plain)
+    plain = html_lib.unescape(plain)
+    plain = re.sub(r"\s+", " ", plain).strip()
+
+    return plain or None, more_info_url
+
+
 @dataclass
 class PostcodeloterijData:
     prize_count: int = 0
     prizes: list[str] = field(default_factory=list)
     period: str = ""
     prize_img_url: str | None = None
+    prize_description: str | None = None
+    prize_more_info_url: str | None = None
 
 
 class PostcodeloterijCoordinator(DataUpdateCoordinator[PostcodeloterijData]):
@@ -60,16 +80,19 @@ class PostcodeloterijCoordinator(DataUpdateCoordinator[PostcodeloterijData]):
                 f"Could not fetch prize data for {self._postcode}: {err}"
             ) from err
 
+        enriched = data.get("enrichedData") or []
+        first = enriched[0] if enriched else {}
+
         # enrichedData carries the clean prize title; wonPrizes.description
         # appends a lottery-type suffix (e.g. "Pizzaprijs PL") that is
         # not useful to end users.
         prizes = [
-            e.get("prizeTitle", "")
-            for e in data.get("enrichedData", [])
+            e.get("prizeTitle", "") for e in enriched
         ] or [
-            p.get("description", "")
-            for p in data.get("wonPrizes", [])
+            p.get("description", "") for p in data.get("wonPrizes", [])
         ]
+
+        prize_description, prize_more_info_url = _parse_content(first.get("content"))
 
         _LOGGER.debug(
             "Postcodeloterij %s — period %s, prizes: %d",
@@ -78,12 +101,11 @@ class PostcodeloterijCoordinator(DataUpdateCoordinator[PostcodeloterijData]):
             data.get("prizeCount", 0),
         )
 
-        enriched = data.get("enrichedData") or []
-        prize_img_url = enriched[0].get("prizeImgUrl") if enriched else None
-
         return PostcodeloterijData(
             prize_count=data.get("prizeCount", 0),
             prizes=prizes,
             period=target.strftime("%m-%Y"),
-            prize_img_url=prize_img_url,
+            prize_img_url=first.get("prizeImgUrl"),
+            prize_description=prize_description,
+            prize_more_info_url=prize_more_info_url,
         )
