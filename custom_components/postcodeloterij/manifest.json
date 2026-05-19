@@ -4,7 +4,7 @@
   "codeowners": ["@peternijssen"],
   "config_flow": true,
   "documentation": "https://github.com/peternijssen/ha-postcodeloterij",
-  "integration_type": "device",
+  "integration_type": "service",
   "iot_class": "cloud_polling",
   "issue_tracker": "https://github.com/peternijssen/ha-postcodeloterij/issues",
   "requirements": [],

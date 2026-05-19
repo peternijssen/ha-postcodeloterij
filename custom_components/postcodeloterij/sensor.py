@@ -4,7 +4,7 @@ from __future__ import annotations
 import logging
 from typing import Any
 
-from homeassistant.components.sensor import SensorEntity
+from homeassistant.components.sensor import SensorEntity, SensorStateClass
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.device_registry import DeviceEntryType
@@ -36,6 +36,7 @@ class PostcodeloterijSensor(
 
     _attr_icon = "mdi:trophy"
     _attr_native_unit_of_measurement = "prizes"
+    _attr_state_class = SensorStateClass.MEASUREMENT
 
     def __init__(
         self,
