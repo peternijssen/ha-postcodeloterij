@@ -99,6 +99,10 @@ See [docs/api/](docs/api/) for the full API reference, including the request for
 - Prize data is fetched from the Postcodeloterij public API
 - Prizes for month M are published around the 1st of month M+1, so the integration always checks the previous month's draw results
 
+## Acknowledgements
+
+This integration is based on the original work by [kvanhoorn](https://github.com/kvanhoorn/hass).
+
 ## Disclaimer
 
 This integration and its documentation were generated with the assistance of AI tools. It is an independent, community-built project with no affiliation, endorsement, or connection to Postcodeloterij or any of its subsidiaries.
