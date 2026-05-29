@@ -6,8 +6,8 @@ A custom component for [Home Assistant](https://www.home-assistant.io/) that che
 
 - Configure one or more postal codes through the Home Assistant UI
 - One sensor per postal code showing the number of prizes won
-- Prize descriptions and the draw period are exposed as attributes
-- Checks every 12 hours (draws only happen once a month, so this is more than sufficient)
+- Prize descriptions, image, and draw period exposed as attributes
+- Checks every 12 hours
 
 ## Installation
 
@@ -30,36 +30,15 @@ A custom component for [Home Assistant](https://www.home-assistant.io/) that che
 3. Enter your postal code (format: `1234AB`)
 4. Repeat for each additional postal code you want to track
 
-## Sensor
+## Sensors
 
 Each configured postal code gets one sensor:
 
-| Property | Value |
-|---|---|
-| Entity ID | `sensor.postcodeloterij_1234ab` |
-| State | Number of prizes won (integer) |
-| Unit | prizes |
-| Icon | `mdi:trophy` |
+| Entity | Description |
+|--------|-------------|
+| `sensor.postcodeloterij_<postcode>` | Number of prizes won in the most recent draw |
 
-### Attributes
-
-| Attribute | Description |
-|---|---|
-| `prizes` | List of prize descriptions (empty when no prizes won) |
-| `period` | The draw period checked, formatted as `MM-YYYY` |
-| `prize_img_url` | URL of the prize image, or `null` when no prize was won |
-| `prize_description` | Plain-text prize description, or `null` when no prize was won |
-| `prize_more_info_url` | URL to the prize detail page on the Postcodeloterij FAQ, or `null` when no prize was won |
-
-### Example state
-
-```yaml
-state: 1
-attributes:
-  prizes:
-    - "Straatprijs €25.000"
-  period: "05-2026"
-```
+For the full attribute reference and draw timing details see [docs/sensors.md](docs/sensors.md).
 
 ## Automation example
 
@@ -88,23 +67,10 @@ automation:
           priority: high
 ```
 
-The condition on `now().day == 2` gives the Postcodeloterij a day after the draw to publish results before the automation fires. Adjust the day and time to your preference.
-
-## API
-
-See [docs/api/](docs/api/) for the full API reference, including the request format, response structure, and field descriptions.
-
-## Notes
-
-- Prize data is fetched from the Postcodeloterij public API
-- Prizes for month M are published around the 1st of month M+1, so the integration always checks the previous month's draw results
-
 ## Acknowledgements
 
 This integration is based on the original work by [kvanhoorn](https://github.com/kvanhoorn/hass).
 
 ## Disclaimer
 
-This integration and its documentation were generated with the assistance of AI tools. It is an independent, community-built project with no affiliation, endorsement, or connection to Postcodeloterij or any of its subsidiaries.
-
-Use at your own risk. The Postcodeloterij API is undocumented and may change without notice, which could break this integration at any time.
+This is an independent, community-built project with no affiliation, endorsement, or connection to Postcodeloterij or any of its subsidiaries. The Postcodeloterij API is undocumented and may change without notice.
