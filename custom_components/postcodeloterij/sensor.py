@@ -40,6 +40,7 @@ class PostcodeloterijSensor(
     _attr_icon = "mdi:trophy"
     _attr_native_unit_of_measurement = "prizes"
     _attr_state_class = SensorStateClass.MEASUREMENT
+    _attr_attribution = "Data provided by Postcodeloterij"
 
     def __init__(
         self,
