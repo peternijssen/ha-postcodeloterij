@@ -5,26 +5,29 @@ import logging
 from typing import Any
 
 from homeassistant.components.sensor import SensorEntity, SensorStateClass
-from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.device_registry import DeviceEntryType
 from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
+from . import PostcodeloterijConfigEntry
 from .const import CONF_POSTCODE, DOMAIN
 from .coordinator import PostcodeloterijCoordinator, PostcodeloterijData
 
 _LOGGER = logging.getLogger(__name__)
 
+# The DataUpdateCoordinator handles fan-out; HA's per-entity throttling adds nothing.
+PARALLEL_UPDATES = 0
+
 
 async def async_setup_entry(
     hass: HomeAssistant,
-    entry: ConfigEntry,
+    entry: PostcodeloterijConfigEntry,
     async_add_entities: AddEntitiesCallback,
 ) -> None:
     """Set up Postcodeloterij sensor entities from a config entry."""
-    coordinator: PostcodeloterijCoordinator = hass.data[DOMAIN][entry.entry_id]
+    coordinator = entry.runtime_data
     await coordinator.async_config_entry_first_refresh()
     async_add_entities([PostcodeloterijSensor(coordinator, entry)])
 
@@ -41,7 +44,7 @@ class PostcodeloterijSensor(
     def __init__(
         self,
         coordinator: PostcodeloterijCoordinator,
-        entry: ConfigEntry,
+        entry: PostcodeloterijConfigEntry,
     ) -> None:
         super().__init__(coordinator)
         postcode: str = entry.data[CONF_POSTCODE]
@@ -61,9 +64,9 @@ class PostcodeloterijSensor(
         return self.coordinator.data
 
     @property
-    def native_value(self) -> int:
+    def native_value(self) -> int | None:
         if self._data is None:
-            return 0
+            return None
         return self._data.prize_count
 
     @property
