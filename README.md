@@ -13,8 +13,8 @@ A custom component for [Home Assistant](https://www.home-assistant.io/) that che
 
 ### HACS (recommended)
 
-1. Open HACS in Home Assistant
-2. Go to **Integrations** and click **+ Explore & Download Repositories**
+1. Open HACS → **Integrations** → ⋮ → **Custom repositories**
+2. Add this repository URL and select category **Integration**
 3. Search for **Postcodeloterij** and install it
 4. Restart Home Assistant
 
