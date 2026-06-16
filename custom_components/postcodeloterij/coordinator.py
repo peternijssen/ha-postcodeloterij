@@ -76,11 +76,9 @@ class PostcodeloterijCoordinator(DataUpdateCoordinator[PostcodeloterijData]):
                 resp.raise_for_status()
                 data = await resp.json(content_type=None)
         except aiohttp.ClientError as err:
-            _LOGGER.warning(
-                "Postcodeloterij endpoint unreachable for %s: %s",
-                self._postcode,
-                err,
-            )
+            # DataUpdateCoordinator already logs UpdateFailed once on the
+            # transition to unavailable and once on recovery — no need to
+            # warn here as well.
             raise UpdateFailed(
                 f"Could not fetch prize data for {self._postcode}: {err}"
             ) from err

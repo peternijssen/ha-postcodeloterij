@@ -48,13 +48,23 @@ re-propose these as improvements:
 - `_attr_attribution = "Data provided by Postcodeloterij"` on the sensor
 - Sensor returns `None` (unavailable) when coordinator data is missing,
   not `0`, so consumers can tell "no prizes won" apart from "no data"
+- Network errors raise `UpdateFailed` without an extra `_LOGGER.warning`
+  — the `DataUpdateCoordinator` base class already logs the transition
+  to unavailable once and the recovery once. Do not re-introduce
+  per-error warning logs; they spam during long outages.
 
-## What was deliberately skipped
+## Planned for the next major version
 
-- **`has_entity_name`** is *not* used on this integration. Switching to
-  it would change friendly names for existing dashboards and automations.
-  The user weighed this trade-off explicitly. Do not change it without
-  asking.
+- **`has_entity_name`** is *not yet* used on this integration. Adopting
+  it is a Bronze-tier requirement per HA docs ("There are no exceptions
+  to this rule"), but switching it on now would change friendly names
+  for existing dashboards and automations. It will land in the next
+  breaking-change release alongside any other naming/structure shifts.
+  Until then, the silver claim in the manifest is pragmatic rather than
+  strict-by-the-book.
+
+## Deliberately skipped (no plan to change)
+
 - **`_unrecorded_attributes`** is *not* used. The sensor only polls
   twice a day, the attributes change once a month, and they're
   user-meaningful (prize titles, image URL, description). Recorder
@@ -82,4 +92,6 @@ re-propose these as improvements:
 python -m pytest tests/ --cov=custom_components.postcodeloterij
 ```
 
-Coverage must stay ≥75% (silver requirement). Run before committing.
+Coverage must stay **above 95%** (the silver `test-coverage` rule on
+developers.home-assistant.io). Current coverage is 96%. Run before
+committing.
