@@ -38,7 +38,7 @@ class PostcodeloterijSensor(
     """Sensor reporting the number of prizes won for a given postcode."""
 
     _attr_icon = "mdi:trophy"
-    _attr_native_unit_of_measurement = "prizes"
+    _attr_translation_key = "prizes"
     _attr_state_class = SensorStateClass.MEASUREMENT
     _attr_attribution = "Data provided by Postcodeloterij"
 

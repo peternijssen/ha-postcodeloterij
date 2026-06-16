@@ -20,5 +20,12 @@
     "abort": {
       "already_configured": "Deze postcode is al geconfigureerd."
     }
+  },
+  "entity": {
+    "sensor": {
+      "prizes": {
+        "unit_of_measurement": "prijzen"
+      }
+    }
   }
 }

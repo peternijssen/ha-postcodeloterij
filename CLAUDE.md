@@ -18,7 +18,7 @@ you only "know" from training data.
 | Config flow, options flow, reauth, reconfigure | https://developers.home-assistant.io/docs/config_entries_config_flow_handler |
 | DataUpdateCoordinator pattern | https://developers.home-assistant.io/docs/integration_fetching_data |
 | Quality scale rules | https://developers.home-assistant.io/docs/core/integration-quality-scale |
-| Diagnostics | https://developers.home-assistant.io/docs/integration_diagnostics |
+| Diagnostics | https://developers.home-assistant.io/docs/core/integration/diagnostics |
 | Translations | https://developers.home-assistant.io/docs/internationalization/core |
 | Brand registration | https://developers.home-assistant.io/docs/creating_integration_brand |
 
@@ -40,12 +40,19 @@ re-propose these as improvements:
 - `ConfigEntry.runtime_data` (the coordinator is the runtime data —
   no dataclass needed since there is only one thing to carry)
 - `PARALLEL_UPDATES = 0` in `sensor.py`
-- Coordinator logs a warning on unavailability
+- Coordinator is constructed with `config_entry=entry` so
+  `self.config_entry` is available on the base class — do not
+  refactor this to take just the postcode again
 - Diagnostics handler in `diagnostics.py` (no credentials to redact —
   postcode-only setup)
 - Tests for config flow, sensor, coordinator helpers, diagnostics, and
-  setup/unload lifecycle (≥75% required for silver)
+  setup/unload lifecycle (above 95% required for silver — current 96%)
 - `_attr_attribution = "Data provided by Postcodeloterij"` on the sensor
+- `_attr_translation_key = "prizes"` on the sensor; the unit is supplied
+  via `entity.sensor.prizes.unit_of_measurement` in `strings.json` and
+  the per-language translations (Dutch: `"prijzen"`). Do not re-introduce
+  `_attr_native_unit_of_measurement` — translated units are the
+  HA-spec-compliant way to surface count-units.
 - Sensor returns `None` (unavailable) when coordinator data is missing,
   not `0`, so consumers can tell "no prizes won" apart from "no data"
 - Network errors raise `UpdateFailed` without an extra `_LOGGER.warning`

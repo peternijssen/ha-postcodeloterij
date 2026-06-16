@@ -10,6 +10,14 @@ from custom_components.postcodeloterij.coordinator import (
 
 POSTCODE = "1234AB"
 
+
+def _mock_entry(postcode: str = POSTCODE) -> MagicMock:
+    entry = MagicMock()
+    entry.data = {"postcode": postcode}
+    entry.options = {}
+    return entry
+
+
 API_RESPONSE_NO_PRIZES = {
     "prizeCount": 0,
     "wonPrizes": [],
@@ -39,7 +47,7 @@ def _mock_response(payload: dict):
 
 
 async def test_no_prizes(hass):
-    coordinator = PostcodeloterijCoordinator(hass, POSTCODE)
+    coordinator = PostcodeloterijCoordinator(hass, _mock_entry())
 
     with patch(
         "custom_components.postcodeloterij.coordinator.async_get_clientsession"
@@ -59,7 +67,7 @@ async def test_no_prizes(hass):
 
 
 async def test_with_prize(hass):
-    coordinator = PostcodeloterijCoordinator(hass, POSTCODE)
+    coordinator = PostcodeloterijCoordinator(hass, _mock_entry())
 
     with patch(
         "custom_components.postcodeloterij.coordinator.async_get_clientsession"
@@ -79,7 +87,7 @@ async def test_with_prize(hass):
 
 async def test_enriched_title_preferred_over_won_prizes(hass):
     """enrichedData prizeTitle takes priority over wonPrizes description."""
-    coordinator = PostcodeloterijCoordinator(hass, POSTCODE)
+    coordinator = PostcodeloterijCoordinator(hass, _mock_entry())
 
     with patch(
         "custom_components.postcodeloterij.coordinator.async_get_clientsession"
@@ -97,7 +105,7 @@ async def test_enriched_title_preferred_over_won_prizes(hass):
 async def test_period_is_previous_month(hass, freezer):
     """The queried period is always the calendar month before today."""
     freezer.move_to("2026-05-15")
-    coordinator = PostcodeloterijCoordinator(hass, POSTCODE)
+    coordinator = PostcodeloterijCoordinator(hass, _mock_entry())
 
     with patch(
         "custom_components.postcodeloterij.coordinator.async_get_clientsession"
@@ -115,7 +123,7 @@ async def test_api_error_raises_update_failed(hass):
     import aiohttp
     from homeassistant.helpers.update_coordinator import UpdateFailed
 
-    coordinator = PostcodeloterijCoordinator(hass, POSTCODE)
+    coordinator = PostcodeloterijCoordinator(hass, _mock_entry())
 
     with patch(
         "custom_components.postcodeloterij.coordinator.async_get_clientsession"

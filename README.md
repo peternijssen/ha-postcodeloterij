@@ -30,6 +30,20 @@ A custom component for [Home Assistant](https://www.home-assistant.io/) that che
 3. Enter your postal code (format: `1234AB`)
 4. Repeat for each additional postal code you want to track
 
+### Setup parameters
+
+| Field | Description |
+|---|---|
+| Postal code | Your Dutch postal code in the `1234AB` format — four digits followed by two uppercase letters. No account or credentials are needed; the integration uses the public lottery results endpoint. |
+
+### Options
+
+This integration has no configurable options. The polling interval is fixed at 12 hours because lottery results are published monthly — there is no benefit to checking more often.
+
+## Removal
+
+Standard Home Assistant removal applies: **Settings → Devices & Services → Postcodeloterij → ⋮ → Delete**. No external cleanup is needed; deleting the config entry stops the polling.
+
 ## Sensors
 
 Each configured postal code gets one sensor:

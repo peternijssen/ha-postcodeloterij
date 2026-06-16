@@ -20,5 +20,12 @@
     "abort": {
       "already_configured": "This postal code is already configured."
     }
+  },
+  "entity": {
+    "sensor": {
+      "prizes": {
+        "unit_of_measurement": "prizes"
+      }
+    }
   }
 }

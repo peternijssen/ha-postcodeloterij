@@ -6,6 +6,7 @@ import logging
 import re
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
+from typing import TYPE_CHECKING
 
 import aiohttp
 
@@ -13,7 +14,10 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
-from .const import API_HEADERS, API_URL, DOMAIN, POLL_INTERVAL
+from .const import API_HEADERS, API_URL, CONF_POSTCODE, DOMAIN, POLL_INTERVAL
+
+if TYPE_CHECKING:
+    from . import PostcodeloterijConfigEntry
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -47,10 +51,14 @@ class PostcodeloterijData:
 class PostcodeloterijCoordinator(DataUpdateCoordinator[PostcodeloterijData]):
     """Coordinator that polls the Postcodeloterij API on a fixed schedule."""
 
-    def __init__(self, hass: HomeAssistant, postcode: str) -> None:
+    def __init__(
+        self, hass: HomeAssistant, entry: PostcodeloterijConfigEntry
+    ) -> None:
+        postcode: str = entry.data[CONF_POSTCODE]
         super().__init__(
             hass,
             _LOGGER,
+            config_entry=entry,
             name=f"{DOMAIN}_{postcode}",
             update_interval=timedelta(seconds=POLL_INTERVAL),
         )
