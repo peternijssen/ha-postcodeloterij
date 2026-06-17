@@ -20,7 +20,11 @@ you only "know" from training data.
 | Quality scale rules | https://developers.home-assistant.io/docs/core/integration-quality-scale |
 | Diagnostics | https://developers.home-assistant.io/docs/core/integration/diagnostics |
 | Translations | https://developers.home-assistant.io/docs/internationalization/core |
-| Brand registration | https://developers.home-assistant.io/docs/creating_integration_brand |
+
+Branding is handled by the local `brand/` folder (HACS reads `icon.png`
+from it). The official `home-assistant/brands` repo is for HA Core
+integrations and does not apply here, so do not link to that flow when
+proposing branding changes.
 
 ### Recent developer-facing changes
 
@@ -45,8 +49,11 @@ re-propose these as improvements:
   refactor this to take just the postcode again
 - Diagnostics handler in `diagnostics.py` (no credentials to redact —
   postcode-only setup)
-- Tests for config flow, sensor, coordinator helpers, diagnostics, and
-  setup/unload lifecycle (above 95% required for silver — current 96%)
+- Tests for config flow, sensor, coordinator helpers (data update
+  flow + the HTML `_parse_content` helper) and diagnostics — above
+  95% required for silver, current 96%. There is no `test_init.py`;
+  the setup/unload path is exercised indirectly via the config-flow
+  and coordinator tests.
 - `_attr_attribution = "Data provided by Postcodeloterij"` on the sensor
 - `_attr_translation_key = "prizes"` on the sensor; the unit is supplied
   via `entity.sensor.prizes.unit_of_measurement` in `strings.json` and
