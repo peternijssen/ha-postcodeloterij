@@ -87,7 +87,7 @@ This integration is based on the original work by [kvanhoorn](https://github.com
 
 ## Disclaimer
 
-This is an independent, community-built project with no affiliation, endorsement, or connection to Postcodeloterij or any of its subsidiaries. The Postcodeloterij API is undocumented and may change without notice.
+This is an independent, community-built project with no affiliation, endorsement, or connection to Postcodeloterij or any of its subsidiaries. The Postcodeloterij API is undocumented and may change without notice. The maintainers have not asked Postcodeloterij for permission to use this API; installing this integration may breach Postcodeloterij's Terms of Service. You take any risk that follows — account suspension, service disruption, etc. No warranty (see [LICENSE](LICENSE)).
 
 ## License
 
