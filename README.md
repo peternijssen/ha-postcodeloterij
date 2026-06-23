@@ -2,6 +2,18 @@
 
 A custom component for [Home Assistant](https://www.home-assistant.io/) that checks whether your postal code has won a prize in the Dutch [Postcodeloterij](https://www.postcodeloterij.nl/) monthly draw.
 
+## Contents
+
+- [Features](#features)
+- [Installation](#installation)
+- [Configuration](#configuration)
+- [Removal](#removal)
+- [Sensors](#sensors)
+- [Automation example](#automation-example)
+- [Acknowledgements](#acknowledgements)
+- [Disclaimer](#disclaimer)
+- [License](#license)
+
 ## Features
 
 - Configure one or more postal codes through the Home Assistant UI
