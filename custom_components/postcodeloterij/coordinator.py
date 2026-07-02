@@ -5,7 +5,7 @@ import html as html_lib
 import logging
 import re
 from dataclasses import dataclass, field
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import TYPE_CHECKING
 
 import aiohttp
@@ -63,6 +63,10 @@ class PostcodeloterijCoordinator(DataUpdateCoordinator[PostcodeloterijData]):
             update_interval=timedelta(seconds=POLL_INTERVAL),
         )
         self._postcode = postcode
+        # Timestamp of the last successful poll, surfaced by a diagnostic
+        # sensor. With a 12-hour poll interval a silently-stale integration
+        # would otherwise go unnoticed for a long time.
+        self.last_success_time: datetime | None = None
 
     async def _async_update_data(self) -> PostcodeloterijData:
         session = async_get_clientsession(self.hass)
@@ -112,6 +116,7 @@ class PostcodeloterijCoordinator(DataUpdateCoordinator[PostcodeloterijData]):
             data.get("prizeCount", 0),
         )
 
+        self.last_success_time = datetime.now(timezone.utc)
         return PostcodeloterijData(
             prize_count=data.get("prizeCount", 0),
             prizes=prizes,
