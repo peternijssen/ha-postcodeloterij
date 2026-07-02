@@ -57,7 +57,30 @@ def test_attributes_empty_when_data_missing():
     assert sensor.extra_state_attributes == {}
 
 
-def test_sensor_uses_postcode_as_unique_id_and_friendly_name():
+def test_sensor_uses_postcode_as_unique_id_and_device_name():
     sensor = PostcodeloterijSensor(_make_coordinator(None), _make_entry("5678CD"))
     assert sensor.unique_id == "5678CD"
-    assert sensor.name == "Postcodeloterij 5678CD"
+    # Naming runs through has_entity_name + translation_key (suite-wide
+    # pattern); the postcode lives on the device name that prefixes it.
+    assert sensor.has_entity_name is True
+    assert sensor.translation_key == "prizes"
+    assert sensor.device_info["name"] == "Postcodeloterij 5678CD"
+
+
+def test_last_update_sensor_reports_coordinator_timestamp():
+    from datetime import datetime, timezone
+
+    from custom_components.postcodeloterij.sensor import (
+        PostcodeloterijLastUpdateSensor,
+    )
+
+    coordinator = _make_coordinator(None)
+    coordinator.last_success_time = None
+    sensor = PostcodeloterijLastUpdateSensor(coordinator, _make_entry("5678CD"))
+    assert sensor.unique_id == "5678CD_last_update"
+    assert sensor.native_value is None
+
+    stamp = datetime(2026, 7, 1, 12, 0, tzinfo=timezone.utc)
+    coordinator.last_success_time = stamp
+    assert sensor.native_value == stamp
+    assert sensor.device_info["name"] == "Postcodeloterij 5678CD"

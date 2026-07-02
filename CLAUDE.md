@@ -54,28 +54,31 @@ re-propose these as improvements:
   95% required for silver, current 96%. There is no `test_init.py`;
   the setup/unload path is exercised indirectly via the config-flow
   and coordinator tests.
-- `_attr_attribution = "Data provided by Postcodeloterij"` on the sensor
-- `_attr_translation_key = "prizes"` on the sensor; the unit is supplied
-  via `entity.sensor.prizes.unit_of_measurement` in `strings.json` and
-  the per-language translations (Dutch: `"prijzen"`). Do not re-introduce
-  `_attr_native_unit_of_measurement` — translated units are the
-  HA-spec-compliant way to surface count-units.
+- `_attr_attribution = "Data provided by Postcodeloterij"` on the sensors
+- **`has_entity_name = True`** on every sensor, with `translation_key`
+  routing names through `strings.json` + the language files, and icons in
+  `icons.json` (no `_attr_icon`, no `_attr_name`) — the suite-wide
+  pattern. The postcode lives on the *device* name
+  (`"Postcodeloterij <postcode>"`), which prefixes the entity names.
+  Existing installs keep their entity ids via the registry; new installs
+  get `sensor.postcodeloterij_<postcode>_prizes`. This is a
+  friendly-name breaking change — ship it in a **major** version bump.
+- `_attr_translation_key = "prizes"` on the prizes sensor; the unit is
+  supplied via `entity.sensor.prizes.unit_of_measurement` in
+  `strings.json` and the per-language translations (Dutch: `"prijzen"`).
+  Do not re-introduce `_attr_native_unit_of_measurement` — translated
+  units are the HA-spec-compliant way to surface count-units.
+- **Diagnostic `last_update` sensor** (`PostcodeloterijLastUpdateSensor`,
+  unique_id `{postcode}_last_update`, `EntityCategory.DIAGNOSTIC`, device
+  class TIMESTAMP). Reads `coordinator.last_success_time`, stamped at the
+  end of every successful `_async_update_data` — with a 12-hour poll a
+  silently stale integration would otherwise go unnoticed for days.
 - Sensor returns `None` (unavailable) when coordinator data is missing,
   not `0`, so consumers can tell "no prizes won" apart from "no data"
 - Network errors raise `UpdateFailed` without an extra `_LOGGER.warning`
   — the `DataUpdateCoordinator` base class already logs the transition
   to unavailable once and the recovery once. Do not re-introduce
   per-error warning logs; they spam during long outages.
-
-## Planned for the next major version
-
-- **`has_entity_name`** is *not yet* used on this integration. Adopting
-  it is a Bronze-tier requirement per HA docs ("There are no exceptions
-  to this rule"), but switching it on now would change friendly names
-  for existing dashboards and automations. It will land in the next
-  breaking-change release alongside any other naming/structure shifts.
-  Until then, the silver claim in the manifest is pragmatic rather than
-  strict-by-the-book.
 
 ## Deliberately skipped (no plan to change)
 

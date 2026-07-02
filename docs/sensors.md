@@ -2,9 +2,9 @@
 
 Full reference for all sensors provided by the Postcodeloterij integration.
 
-## `sensor.postcodeloterij_<postcode>`
+## `sensor.postcodeloterij_<postcode>_prizes`
 
-One sensor per configured postal code.
+One sensor per configured postal code. (Installations from before the naming switch keep their original `sensor.postcodeloterij_<postcode>` entity id.)
 
 **State:** number of prizes won in the most recent draw (integer, unit: `prizes`)
 
@@ -27,6 +27,14 @@ attributes:
     - "Straatprijs €25.000"
   period: "05-2026"
 ```
+
+---
+
+## `sensor.postcodeloterij_<postcode>_last_successful_update`
+
+Diagnostic sensor (hidden in the default dashboard, visible on the device page).
+
+**State:** timestamp of the last successful poll of the lottery API. Updates on every successful refresh even when the prize data is unchanged, so you can alert when the integration goes silently stale — with a 12-hour poll interval that would otherwise take long to notice.
 
 ---
 

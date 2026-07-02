@@ -58,11 +58,14 @@ Standard Home Assistant removal applies: **Settings → Devices & Services → P
 
 ## Sensors
 
-Each configured postal code gets one sensor:
+Each configured postal code gets a device with two sensors:
 
 | Entity | Description |
 |--------|-------------|
-| `sensor.postcodeloterij_<postcode>` | Number of prizes won in the most recent draw |
+| `sensor.postcodeloterij_<postcode>_prizes` | Number of prizes won in the most recent draw |
+| `sensor.postcodeloterij_<postcode>_last_successful_update` | Diagnostic: when the lottery API last answered successfully |
+
+Installations that existed before the naming switch keep their original entity id (`sensor.postcodeloterij_<postcode>`) — Home Assistant preserves entity ids across renames.
 
 For the full attribute reference and draw timing details see [docs/sensors.md](docs/sensors.md).
 

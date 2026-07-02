@@ -24,7 +24,11 @@
   "entity": {
     "sensor": {
       "prizes": {
+        "name": "Prizes",
         "unit_of_measurement": "prizes"
+      },
+      "last_update": {
+        "name": "Last successful update"
       }
     }
   }

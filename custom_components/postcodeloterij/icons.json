@@ -1,0 +1,12 @@
+{
+  "entity": {
+    "sensor": {
+      "prizes": {
+        "default": "mdi:trophy"
+      },
+      "last_update": {
+        "default": "mdi:clock-check-outline"
+      }
+    }
+  }
+}
