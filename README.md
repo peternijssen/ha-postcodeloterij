@@ -25,10 +25,14 @@ A custom component for [Home Assistant](https://www.home-assistant.io/) that che
 
 ### HACS (recommended)
 
-1. Open HACS → **Integrations** → ⋮ → **Custom repositories**
-2. Add this repository URL and select category **Integration**
-3. Search for **Postcodeloterij** and install it
-4. Restart Home Assistant
+This integration is available in the default [HACS](https://hacs.xyz) store —
+no custom repository needed.
+
+1. Open HACS and search for **Postcodeloterij**
+2. Select it and click **Download**
+3. Restart Home Assistant
+
+[![Open your Home Assistant instance and open this repository inside HACS.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=peternijssen&repository=ha-postcodeloterij&category=integration)
 
 ### Manual
 
