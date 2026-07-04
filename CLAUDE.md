@@ -61,8 +61,10 @@ re-propose these as improvements:
   pattern. The postcode lives on the *device* name
   (`"Postcodeloterij <postcode>"`), which prefixes the entity names.
   Existing installs keep their entity ids via the registry; new installs
-  get `sensor.postcodeloterij_<postcode>_prizes`. This is a
-  friendly-name breaking change — ship it in a **major** version bump.
+  get `sensor.postcodeloterij_<postcode>_prizes`. Shipped in **1.3.0**
+  as a minor (user decision): the release notes call out the renamed
+  friendly names and that entity ids are preserved, which is the part
+  automations depend on. No follow-up needed.
 - `_attr_translation_key = "prizes"` on the prizes sensor; the unit is
   supplied via `entity.sensor.prizes.unit_of_measurement` in
   `strings.json` and the per-language translations (Dutch: `"prijzen"`).
