@@ -3,6 +3,9 @@
 [![Release](https://img.shields.io/github/v/release/peternijssen/ha-postcodeloterij.svg)](https://github.com/peternijssen/ha-postcodeloterij/releases)
 [![HACS](https://img.shields.io/badge/HACS-Default-41BDF5.svg)](https://github.com/hacs/integration)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+> 💬 Questions or feedback? Join the discussion on the [Home Assistant community](https://community.home-assistant.io/t/postcodeloterij-integration-dutch-postcode-lottery/1014788).
+
 A custom component for [Home Assistant](https://www.home-assistant.io/) that checks whether your postal code has won a prize in the Dutch [Postcodeloterij](https://www.postcodeloterij.nl/) monthly draw.
 
 ## Contents
