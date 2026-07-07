@@ -1,0 +1,17 @@
+# A compact card showing this month's Postcodeloterij result: the prize
+# count as the entity state, the prize description, and the prize image.
+# Shared by the community:
+# https://community.home-assistant.io/t/postcodeloterij-integration-dutch-postcode-lottery/1014788
+#
+# Replace `1234ab` with your own postcode (lowercase, as HA generates it).
+# Paste into the YAML editor of a manual card.
+
+type: vertical-stack
+cards:
+  - type: entity
+    entity: sensor.postcodeloterij_1234ab_prizes
+    attribute: prize_description
+  - type: markdown
+    content: >-
+      ![prize]({{ state_attr('sensor.postcodeloterij_1234ab_prizes',
+      'prize_img_url') }})

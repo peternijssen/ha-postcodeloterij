@@ -1,0 +1,27 @@
+# Check for prizes on the 2nd of every month at 14:00 and send a priority
+# notification (with the prize image) if your postcode won. Postcodeloterij
+# results are published monthly, so a single daily check is plenty.
+#
+# Replace `1234ab` with your own postcode (lowercase, as HA generates it)
+# and `notify.all_devices` with your own notify service.
+
+alias: "Postcodeloterij: Prijs"
+description: Notify on the 2nd of the month when your postcode has won a prize.
+triggers:
+  - trigger: time
+    at: "14:00:00"
+conditions:
+  - condition: template
+    value_template: "{{ now().day == 2 }}"
+  - condition: template
+    value_template: "{{ states('sensor.postcodeloterij_1234ab_prizes') | int(0) > 0 }}"
+actions:
+  - action: notify.all_devices
+    data:
+      title: "Postcodeloterij uitslag"
+      message: "{{ state_attr('sensor.postcodeloterij_1234ab_prizes', 'prize_description') }}"
+      data:
+        clickAction: "{{ state_attr('sensor.postcodeloterij_1234ab_prizes', 'prize_more_info_url') }}"
+        image: "{{ state_attr('sensor.postcodeloterij_1234ab_prizes', 'prize_img_url') }}"
+        ttl: 0
+        priority: high

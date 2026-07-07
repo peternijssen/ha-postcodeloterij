@@ -15,7 +15,7 @@ A custom component for [Home Assistant](https://www.home-assistant.io/) that che
 - [Configuration](#configuration)
 - [Removal](#removal)
 - [Sensors](#sensors)
-- [Automation example](#automation-example)
+- [Examples](#examples)
 - [Acknowledgements](#acknowledgements)
 - [Disclaimer](#disclaimer)
 - [License](#license)
@@ -79,32 +79,11 @@ Installations that existed before the naming switch keep their original entity i
 
 For the full attribute reference and draw timing details see [docs/sensors.md](docs/sensors.md).
 
-## Automation example
+## Examples
 
-Check for prizes on the 2nd of every month at 14:00 and send a priority notification if you won. Replace `1234ab` with your own postcode (lowercase, as HA generates it).
-
-```yaml
-automation:
-  - id: postcodeloterij
-    alias: "Postcodeloterij: Prijs"
-    initial_state: "on"
-    trigger:
-      platform: time
-      at: "14:00:00"
-    condition:
-      - "{{ now().day == 2 }}"
-      - "{{ states('sensor.postcodeloterij_1234ab') | int(0) > 0 }}"
-    action:
-      action: notify.all_devices
-      data:
-        title: "Postcodeloterij uitslag"
-        message: "{{ state_attr('sensor.postcodeloterij_1234ab', 'prize_description') }}"
-        data:
-          clickAction: "{{ state_attr('sensor.postcodeloterij_1234ab', 'prize_more_info_url') }}"
-          image: "{{ state_attr('sensor.postcodeloterij_1234ab', 'prize_img_url') }}"
-          ttl: 0
-          priority: high
-```
+Ready-to-paste automations and dashboard cards live in [`examples/`](examples/),
+including a monthly prize notification and a card that shows the prize
+description and image (the latter [shared by the community](https://community.home-assistant.io/t/postcodeloterij-integration-dutch-postcode-lottery/1014788)).
 
 ## Acknowledgements
 
