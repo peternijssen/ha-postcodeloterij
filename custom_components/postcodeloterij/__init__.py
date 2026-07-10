@@ -16,6 +16,14 @@ async def async_setup_entry(
     """Set up Postcodeloterij from a config entry."""
     coordinator = PostcodeloterijCoordinator(hass, entry)
     entry.runtime_data = coordinator
+
+    # Fetch initial data here, before forwarding to platforms. Raising
+    # ConfigEntryNotReady from a forwarded platform is too late for HA to catch
+    # cleanly (it logs a warning and half-sets-up the entry); doing the first
+    # refresh here lets a transient failure fail the whole entry so HA retries
+    # it with backoff.
+    await coordinator.async_config_entry_first_refresh()
+
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
     return True
 

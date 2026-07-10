@@ -47,13 +47,19 @@ re-propose these as improvements:
 - Coordinator is constructed with `config_entry=entry` so
   `self.config_entry` is available on the base class — do not
   refactor this to take just the postcode again
+- **First refresh runs in `__init__.py`, before `async_forward_entry_setups`**
+  — `async_setup_entry` awaits `coordinator.async_config_entry_first_refresh()`
+  before forwarding (not in the `sensor.py` platform). Raising
+  `ConfigEntryNotReady` from a *forwarded* platform is too late for HA to
+  catch — it logs a warning and half-sets-up the entry. Do not move it back
+  into a platform.
 - Diagnostics handler in `diagnostics.py` (no credentials to redact —
   postcode-only setup)
 - Tests for config flow, sensor, coordinator helpers (data update
-  flow + the HTML `_parse_content` helper) and diagnostics — above
-  95% required for silver, current 96%. There is no `test_init.py`;
-  the setup/unload path is exercised indirectly via the config-flow
-  and coordinator tests.
+  flow + the HTML `_parse_content` helper), diagnostics and
+  setup/unload (`test_init.py` — successful setup+unload plus the
+  first-refresh-failure → `SETUP_RETRY` path) — above 95% required for
+  silver, current 97%.
 - `_attr_attribution = "Data provided by Postcodeloterij"` on the sensors
 - **`has_entity_name = True`** on every sensor, with `translation_key`
   routing names through `strings.json` + the language files, and icons in

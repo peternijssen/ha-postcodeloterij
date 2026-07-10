@@ -33,8 +33,10 @@ async def async_setup_entry(
     async_add_entities: AddEntitiesCallback,
 ) -> None:
     """Set up Postcodeloterij sensor entities from a config entry."""
+    # The coordinator is already refreshed by __init__.py before platforms are
+    # forwarded, so ConfigEntryNotReady is raised from the entry setup rather
+    # than (too late) from this forwarded platform.
     coordinator = entry.runtime_data
-    await coordinator.async_config_entry_first_refresh()
     async_add_entities([
         PostcodeloterijSensor(coordinator, entry),
         PostcodeloterijLastUpdateSensor(coordinator, entry),
